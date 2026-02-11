@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
         isSubmitting = true; // Set flag
 
         // Ambil nilai dari input
-        const kupon = document.getElementById('kupon').value;
-        const nama = document.getElementById('nama').value;
-        const nomor = document.getElementById('nomor').value;
-        const saldo = document.getElementById('saldo').value;
+        const kupon = document.getElementById('a').value;
+        const nama = document.getElementById('b').value;
+        const nomor = document.getElementById('c').value;
+        const saldo = document.getElementById('d').value;
 
         // Validasi sederhana
         if (!kupon || !nama || !nomor || !saldo) {
